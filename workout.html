@@ -1,56 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Workout Planner</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    html {
-      perspective: 1000px;
-    }
-    body {
-      perspective: 1200px;
-    }
-  </style>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
 <body>
+
+  <!-- NAVBAR -->
+
+  <nav class="navbar">
+
+    <div class="logo">
+      FitZone
+    </div>
+
+    <div class="menu-toggle" id="menuToggle">
+      ☰
+    </div>
+
+    <div class="nav-links" id="navLinks">
+
+      <a href="index.html">Home</a>
+
+      <a href="workout.html">Workout</a>
+
+      <a href="diet.html">Diet</a>
+
+    </div>
+
+  </nav>
 
   <div class="container">
 
     <header>
+
       <div>
-        <h1>🏋️ Workout Planner</h1>
+
+        <h1>
+          🏋️ Workout Planner
+        </h1>
+
         <p id="date"></p>
+
       </div>
 
-      <button id="themeToggle">🌙</button>
+      <button id="themeToggle">
+        🌙
+      </button>
+
     </header>
 
+    <!-- Progress -->
+
     <div class="top-boxes">
+
       <div class="box">
+
         <h3>Progress</h3>
+
         <div class="progress-bar">
-          <div class="progress" id="progress"></div>
+
+          <div
+            class="progress"
+            id="progress"
+          ></div>
+
         </div>
-        <p id="progressText">0%</p>
+
+        <p id="progressText">
+          0%
+        </p>
+
       </div>
 
       <div class="box">
+
         <h3>🔥 Streak</h3>
-        <p id="streak">0 Days</p>
+
+        <p id="streak">
+          0 Days
+        </p>
+
       </div>
+
     </div>
 
     <div class="quote">
-      "Small progress is still progress."
-    </div>
 
-    <div id="workoutList" class="workout-list"></div>
+      "Push yourself because no one else is going to do it for you."
+
+    </div>
+    <div class="day-navigation">
+
+  <button id="prevDay">
+    ← Prev
+  </button>
+
+  <h2 id="currentDayTitle">
+    Monday
+  </h2>
+
+  <button id="nextDay">
+    Next →
+  </button>
+
+</div>
+
+    <!-- Workout Cards -->
+
+    <div
+      id="workoutList"
+      class="workout-list"
+    ></div>
 
   </div>
 
   <script src="script.js"></script>
-</body>
 
+</body>
 </html>
