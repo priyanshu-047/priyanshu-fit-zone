@@ -193,6 +193,26 @@ streakText.innerText = `${localStorage.getItem("streak") || 0} Days`;
 // ==========================
 // Render Workouts
 // ==========================
+// Get YouTube Video ID
+function getYoutubeId(url){
+  return url.split("/embed/")[1];
+}
+
+// Load iframe only on click
+function loadVideo(button, videoUrl){
+
+  const container = button.parentElement;
+
+  container.innerHTML = `
+    <iframe
+      class="demo-video"
+      src="${videoUrl}?autoplay=1&rel=0"
+      frameborder="0"
+      allow="autoplay"
+      allowfullscreen
+    ></iframe>
+  `;
+}
 
 function renderWorkouts() {
 
@@ -208,14 +228,22 @@ function renderWorkouts() {
         card.innerHTML = `
   <div class="left">
 
-    <iframe
-      class="demo-video"
-      src="${workout.video}?autoplay=1&mute=1&loop=1&rel=0"
-      title="${workout.name}"
-      frameborder="0"
-      allow="autoplay"
-      allowfullscreen
-    ></iframe>
+    <div class="video-container">
+
+      <img
+        src="https://img.youtube.com/vi/${getYoutubeId(workout.video)}/hqdefault.jpg"
+        class="video-thumb"
+        alt="${workout.name}"
+      >
+
+      <button
+        class="play-btn"
+        onclick="loadVideo(this, '${workout.video}')"
+      >
+        ▶
+      </button>
+
+    </div>
 
     <h2>${workout.name}</h2>
 
@@ -224,15 +252,13 @@ function renderWorkouts() {
     </p>
 
   </div>
-  <label class="check">
-  Done <label>
+
   <input
     type="checkbox"
     class="check"
     ${checked ? "checked" : ""}
     onchange="toggleWorkout(${index})"
   >
- 
 `;
         workoutList.appendChild(card);
 
@@ -288,3 +314,168 @@ themeToggle.addEventListener("click", () => {
 
 // Initial Render
 renderWorkouts();
+
+// =========================
+// MOBILE NAVBAR
+// =========================
+
+document.addEventListener("DOMContentLoaded", ()=>{
+
+  const menuToggle =
+    document.getElementById("menuToggle");
+
+  const navLinks =
+    document.getElementById("navLinks");
+
+  if(menuToggle && navLinks){
+
+    menuToggle.addEventListener("click", ()=>{
+
+      navLinks.classList.toggle("active");
+
+    });
+
+  }
+
+});
+
+/* ===================================
+   3D CARD MOUSE TRACKING EFFECT
+=================================== */
+
+document.addEventListener('mousemove', (e) => {
+  const cards = document.querySelectorAll('.card');
+  
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = (y - centerY) * 0.008;
+    const rotateY = (centerX - x) * 0.008;
+    
+    // Apply subtle 3D rotation based on mouse
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+    
+    card.style.transform = `
+      translateY(-6px) 
+      rotateX(${rotateX}deg) 
+      rotateY(${rotateY}deg) 
+      translateZ(20px)
+    `;
+  });
+});
+
+// Reset card transforms on mouse leave
+document.addEventListener('mouseleave', () => {
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.style.transform = 'translateY(-6px) rotateX(0) rotateY(0) translateZ(20px)';
+  });
+});
+
+/* ===================================
+   3D CHECKBOX ANIMATION
+=================================== */
+
+document.addEventListener('change', (e) => {
+  if (e.target.classList.contains('check')) {
+    const card = e.target.closest('.card');
+    if (card) {
+      // Animate checkbox with 3D flip
+      e.target.style.animation = 'none';
+      setTimeout(() => {
+        e.target.style.animation = 'checkboxFlip 0.4s ease-out';
+      }, 10);
+    }
+  }
+});
+
+// Add checkbox flip animation to the page
+const checkboxStyle = document.createElement('style');
+checkboxStyle.textContent = `
+  @keyframes checkboxFlip {
+    0% {
+      transform: rotateY(0deg) scale(1);
+    }
+    50% {
+      transform: rotateY(90deg) scale(1.1);
+    }
+    100% {
+      transform: rotateY(360deg) scale(1);
+    }
+  }
+`;
+document.head.appendChild(checkboxStyle);
+
+/* ===================================
+   3D SCROLL CARD ANIMATION
+=================================== */
+
+window.addEventListener('scroll', () => {
+  const cards = document.querySelectorAll('.card');
+  const windowCenter = window.innerHeight / 2;
+  
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const cardCenter = rect.top + rect.height / 2;
+    const distance = Math.abs(windowCenter - cardCenter);
+    const rotation = Math.min(distance / 100, 5);
+    
+    // 3D depth effect based on scroll position
+    card.style.transform = `
+      translateY(-6px)
+      rotateX(${rotation * 0.2}deg)
+      rotateY(${rotation * 0.1}deg)
+      translateZ(${Math.max(0, 20 - distance / 50)}px)
+    `;
+  });
+});
+
+/* ===================================
+   3D PLAY BUTTON EFFECT
+=================================== */
+
+document.addEventListener('mouseover', (e) => {
+  if (e.target.classList.contains('play-btn')) {
+    e.target.style.animation = 'pulseRotate 0.6s ease-out';
+  }
+});
+
+const playBtnStyle = document.createElement('style');
+playBtnStyle.textContent = `
+  @keyframes pulseRotate {
+    0% {
+      transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.15) rotateY(180deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.1) rotateY(360deg);
+    }
+  }
+`;
+document.head.appendChild(playBtnStyle);
+
+/* ===================================
+   3D PROGRESS BAR ANIMATION
+=================================== */
+
+function updateProgress() {
+    const percent = (completed.length / workouts.length) * 100;
+    
+    progress.style.width = `${percent}%`;
+    progressText.innerText = `${Math.round(percent)}% Completed`;
+    
+    // Add 3D depth to progress bar
+    progress.style.boxShadow = `
+      0 0 15px rgba(139, 92, 246, 0.6),
+      inset 0 2px 4px rgba(255, 255, 255, 0.2),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.2)
+    `;
+}

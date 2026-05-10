@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Diet Tracker</title>
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html {
+      perspective: 1000px;
+    }
+    body {
+      perspective: 1200px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header>
+
+      <div class="title">
+        <h1>🥗 Diet Tracker</h1>
+        <p id="dietDate"></p>
+      </div>
+
+      <button id="themeToggle">
+        🌙
+      </button>
+
+    </header>
+
+    <!-- Calories -->
+    <div class="top-boxes">
+
+      <div class="box">
+
+        <h3>Calories</h3>
+
+        <div class="progress-bar">
+          <div class="progress" id="calorieProgress"></div>
+        </div>
+
+        <p id="calorieText">
+          0 / 1500 kcal
+        </p>
+
+      </div>
+
+      <div class="box">
+
+        <h3>💧 Water Intake</h3>
+
+        <p id="waterCount">
+          0 Glasses
+        </p>
+
+        <button class="water-btn" onclick="addWater()">
+          + Add Water
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Quote -->
+    <div class="quote">
+      "Healthy eating is a form of self respect."
+    </div>
+
+    <!-- Meals -->
+    <div class="workout-list" id="mealList"></div>
+
+  </div>
+
+  <script src="diet.js"></script>
+
+</body>
+
+</html>
